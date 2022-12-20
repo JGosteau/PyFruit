@@ -1,0 +1,5 @@
+boto3==1.26.32
+numpy==1.23.5
+opencv-python==4.6.0.66
+pandas==1.5.2
+pyspark==3.3.1

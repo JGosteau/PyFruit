@@ -1,0 +1,56 @@
+version: "0.1"
+services:
+  master_spark:
+    image: pyfruit_spark
+    ports:
+      - 9090:9090
+      - 7077:7077
+    environment:
+      - SPARK_LOCAL_IP=0.0.0.0
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=9090
+    command: ./start-master.sh  
+  worker1_spark:
+    image: pyfruit_spark
+    depends_on:
+      - master_spark
+    ports:
+      - 9091:8080
+      - 7000:7000
+    volumes:
+      - ../output:/app/output
+      - /dir_to_aws_cred:/root/.aws
+    environment:
+      - SPARK_MASTER=spark://spark-master_ip-address:7077
+      - SPARK_LOCAL_IP=0.0.0.0
+      - SPARK_MASTER_PORT=7077
+      - SPARK_WORKER_WEBUI_PORT=8080
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_DRIVER_MEMORY=1G
+      - SPARK_EXECUTOR_MEMORY=1G
+    command: ./start-worker.sh  
+  client_spark:
+    image: pyfruit_spark
+    depends_on:
+      - master_spark
+      - worker1_spark
+    ports:
+      - "5000-5010:5000-5010"
+      - 20002:20002
+      - 6060:6060
+    volumes:
+      - ../output:/app/output
+      - /dir_to_aws_cred:/root/.aws
+    environment:
+      - PYFRUIT_MASTER=spark://spark-master_ip-adress:7077
+      - PYFRUIT_LOCAL_IP=0.0.0.0
+      - SPARK_LOCAL_IP=127.0.0.1
+      - PYFRUIT_DRIVER_HOST=client_ip-address
+      - PYFRUIT_DRIVER_PORT=20002
+      - PYFRUIT_BLOCKMANAGER_PORT=6060
+      - PYFRUIT_INPUT_PATH=s3://jg-oc-p8-s3-bucket
+      - PYFRUIT_OUTPUT_PATH=/app/output/test_cont
+      - PYFRUIT_RESIZE="20,20"
+      - PYFRUIT_NC=2
+    command: ./start-client.sh

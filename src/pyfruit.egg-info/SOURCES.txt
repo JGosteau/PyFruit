@@ -1,0 +1,10 @@
+README.md
+setup.py
+src/pyfruit/__init__.py
+src/pyfruit/process.py
+src/pyfruit/utils.py
+src/pyfruit.egg-info/PKG-INFO
+src/pyfruit.egg-info/SOURCES.txt
+src/pyfruit.egg-info/dependency_links.txt
+src/pyfruit.egg-info/requires.txt
+src/pyfruit.egg-info/top_level.txt
