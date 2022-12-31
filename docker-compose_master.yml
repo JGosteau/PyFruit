@@ -1,0 +1,12 @@
+version: "1.0"
+services:
+  master_spark:
+    image: pyfruit_spark
+    ports:
+      - 9090:9090
+      - 7077:7077
+    environment:
+      - SPARK_LOCAL_IP=0.0.0.0
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=9090
+    command: ./start-master.sh  

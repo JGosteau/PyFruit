@@ -1,4 +1,4 @@
-version: "0.1"
+version: "1.0"
 services:
   master_spark:
     image: pyfruit_spark
@@ -15,42 +15,43 @@ services:
     depends_on:
       - master_spark
     ports:
-      - 9091:8080
+      - 9091:9091
       - 7000:7000
     volumes:
       - ../output:/app/output
-      - /dir_to_aws_cred:/root/.aws
+      - ../data/fruits-360_dataset/fruits-360/Training:/app/data
+      - /home/sparkuser/.aws:/root/.aws
     environment:
-      - SPARK_MASTER=spark://spark-master_ip-address:7077
+      - SPARK_MASTER=spark://ip_master:7077
       - SPARK_LOCAL_IP=0.0.0.0
       - SPARK_MASTER_PORT=7077
-      - SPARK_WORKER_WEBUI_PORT=8080
-      - SPARK_WORKER_CORES=1
-      - SPARK_WORKER_MEMORY=1G
-      - SPARK_DRIVER_MEMORY=1G
-      - SPARK_EXECUTOR_MEMORY=1G
+      - SPARK_WORKER_WEBUI_PORT=9091
+      #- SPARK_WORKER_CORES=4
+      #- SPARK_WORKER_MEMORY=8G
+      #- SPARK_DRIVER_MEMORY=8G
+      #- SPARK_EXECUTOR_MEMORY=8G
     command: ./start-worker.sh  
-  client_spark:
+  jupyter_client_spark:
     image: pyfruit_spark
     depends_on:
       - master_spark
       - worker1_spark
     ports:
-      - "5000-5010:5000-5010"
       - 20002:20002
       - 6060:6060
+      - 8888:8888
     volumes:
       - ../output:/app/output
-      - /dir_to_aws_cred:/root/.aws
+      - ../data/fruits-360_dataset/fruits-360/Training:/app/data
+      - ../notebooks:/app/notebooks
+      - /home/sparkuser/.aws:/root/.aws
     environment:
-      - PYFRUIT_MASTER=spark://spark-master_ip-adress:7077
+      - JUPYTER_PORT=8888
+      - JUPYTER_IP=0.0.0.0
+      - PYFRUIT_MASTER=spark://ip_master:7077
       - PYFRUIT_LOCAL_IP=0.0.0.0
       - SPARK_LOCAL_IP=127.0.0.1
-      - PYFRUIT_DRIVER_HOST=client_ip-address
+      - PYFRUIT_DRIVER_HOST=ip_driver
       - PYFRUIT_DRIVER_PORT=20002
       - PYFRUIT_BLOCKMANAGER_PORT=6060
-      - PYFRUIT_INPUT_PATH=s3://jg-oc-p8-s3-bucket
-      - PYFRUIT_OUTPUT_PATH=/app/output/test_cont
-      - PYFRUIT_RESIZE="20,20"
-      - PYFRUIT_NC=2
-    command: ./start-client.sh
+    command: ./start-client_jupyter.sh

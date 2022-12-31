@@ -16,8 +16,11 @@ echo "PYFRUIT_RESIZE="$PYFRUIT_RESIZE
     --conf spark.driver.port=$PYFRUIT_DRIVER_PORT \
     --conf spark.driver.host=$PYFRUIT_DRIVER_HOST \
     --conf spark.driver.bindAddress=$PYFRUIT_LOCAL_IP \
+    --conf spark.jars.packages=org.apache.hadoop:hadoop-aws:3.2.2 \
+    --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
+    --conf spark.hadoop.fs.s3a.aws.credentials.provider=com.amazonaws.auth.DefaultAWSCredentialsProviderChain \
     main.py \
         -i $PYFRUIT_INPUT_PATH \
         -o $PYFRUIT_OUTPUT_PATH \
-        #-resize_shape $PYFRUIT_RESIZE \
-        #-nc $PYFRUIT_NC
+        -resize_shape $PYFRUIT_RESIZE \
+        -nc $PYFRUIT_NC

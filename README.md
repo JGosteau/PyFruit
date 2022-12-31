@@ -28,6 +28,8 @@ podman build -t pyfruit_spark .
 
 ### Docker container
 
+There is 3 exemples of docker-compose.yml to run a container for a spark-master (docker-compose_master.yml), spark-worker (docker-compose_worker.yml) and jupyter client (docker-compose_jupyter.yml) and docker-compose.yml to create 3 containers : master / worker / jupyter client.
+
 Modify the docker-compose.yml according to your needs : 
 - Set SPARK_MASTER to your master location ip address.
 - Set PYFRUIT_DRIVER_HOST to your client location ip address.
@@ -35,5 +37,5 @@ Modify the docker-compose.yml according to your needs :
 
 Then run podman-compose :
 ```bash
-podman-compose up -d
+podman-compose -f docker-compose.yml up -d
 ```

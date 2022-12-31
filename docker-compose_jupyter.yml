@@ -1,0 +1,21 @@
+version: "1.0"
+services:
+  jupyter_client_spark:
+    image: pyfruit_spark
+    ports:
+      - 20002:20002
+      - 6060:6060
+      - 8888:8888
+    volumes:
+      - ../notebooks:/app/notebooks
+      - /home/sparkuser/.aws:/root/.aws
+    environment:
+      - JUPYTER_PORT=8888
+      - JUPYTER_IP=0.0.0.0
+      - PYFRUIT_MASTER=spark://ip_master:7077
+      - PYFRUIT_LOCAL_IP=0.0.0.0
+      - SPARK_LOCAL_IP=127.0.0.1
+      - PYFRUIT_DRIVER_HOST=ip_driver
+      - PYFRUIT_DRIVER_PORT=20002
+      - PYFRUIT_BLOCKMANAGER_PORT=6060
+    command: ./start-client_jupyter.sh

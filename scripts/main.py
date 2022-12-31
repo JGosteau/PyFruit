@@ -44,6 +44,7 @@ if __name__ == '__main__' :
 
     if config['-v'] == 1 :
         print('Writing in %s...' %(config['-o']), end=' ')
-    df.withColumn('image', array_to_string_udf(df["image"])).withColumn('std', array_to_string_udf(df["std"])).withColumn('pca', array_to_string_udf(df["pca"])).write.mode('overwrite').csv(os.path.abspath(config['-o']))
+    #df.withColumn('image', array_to_string_udf(df["image"])).withColumn('std', array_to_string_udf(df["std"])).withColumn('pca', array_to_string_udf(df["pca"])).write.mode('overwrite').csv(os.path.abspath(config['-o']))
+    df.withColumn('image', array_to_string_udf(df["image"])).withColumn('std', array_to_string_udf(df["std"])).withColumn('pca', array_to_string_udf(df["pca"])).coalesce(1).write.mode('overwrite').csv(os.path.abspath(config['-o']))
     if config['-v'] == 1 :
         print('Done !')

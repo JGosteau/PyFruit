@@ -1,0 +1,19 @@
+version: "1.0"
+services:
+  worker1_spark:
+    image: pyfruit_spark
+    ports:
+      - 9090:9090
+      - 7000:7000
+    volumes:
+      - /home/ubuntu/.aws:/root/.aws
+    environment:
+      - SPARK_MASTER=spark://ip_master:7077
+      - SPARK_LOCAL_IP=0.0.0.0
+      - SPARK_MASTER_PORT=7077
+      - SPARK_WORKER_WEBUI_PORT=9090
+      #- SPARK_WORKER_CORES=4
+      #- SPARK_WORKER_MEMORY=8G
+      #- SPARK_DRIVER_MEMORY=8G
+      #- SPARK_EXECUTOR_MEMORY=8G
+    command: ./start-worker.sh  

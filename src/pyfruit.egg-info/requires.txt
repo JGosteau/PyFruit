@@ -1,5 +1,9 @@
+Pillow==9.3.0
 boto3==1.26.32
 numpy==1.23.5
 opencv-python==4.6.0.66
 pandas==1.5.2
+pyarrow==10.0.1
 pyspark==3.3.1
+torch==1.13.1
+torchvision==0.14.1
